@@ -1,13 +1,14 @@
-import { Route, Routes } from 'react-router-dom';
-import Banner from './Components/Banner/Banner';
-import Navbar from './Components/Navbar/Navbar';
+import { Route, Routes } from "react-router-dom";
+import GymDetail from "./Components/Gyms/GymDetail";
+import Gyms from "./Components/Gyms/Gyms";
+
 
 function App() {
   return (
     <div className="">
-      <Banner />
       <Routes>
-        {/* <Route path="/" element></Route> */}
+        <Route path="/" element={<Gyms />}></Route>
+        <Route path="/gym_details/:gym_name" element={<GymDetail />}></Route>
       </Routes>
     </div>
   );

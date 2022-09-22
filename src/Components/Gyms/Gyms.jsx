@@ -1,11 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useState } from "react";
 import Banner from "../Banner/Banner";
 import GymCard from "./GymCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getGymByPlaces, gymDetails, nearestGym } from "../../Redux/Gym/Action";
+import {
+  getGymByCity,
+  getGymByPlaces,
+  getPlaces,
+  gymDetails,
+  nearestGym,
+} from "../../Redux/Gym/Action";
 import { useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
+import { AiOutlineSearch } from "react-icons/ai";
 
 const Gyms = () => {
   const [selectedCity, setSelectedCity] = useState(null);
@@ -13,64 +21,65 @@ const Gyms = () => {
   const dispatch = useDispatch();
   const { gym } = useSelector((store) => store);
   const [gyms, setGyms] = useState([]);
- const [selectedCityGym, setSelectedCityGym] = useState(null);
- const [loading, setLoading] = useState(true);
+  const [singleGym, setSingleGym] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [places, setPlaces] = useState();
+  const [location, setLocation] = useState();
 
-  console.log("all gym", gyms);
+  console.log("gyms", gym.nearestGym);
   const handleNearestGym = () => {
     dispatch(nearestGym());
-   setSelectedCityGym(null);
-   setGyms([])
+
+    setGyms([]);
   };
 
   useEffect(() => {
-    dispatch(getGymByPlaces());
+    dispatch(getPlaces());
+    dispatch(nearestGym());
   }, []);
 
-  useEffect(() => {}, [gym.places]);
+  useEffect(() => {
+    setPlaces(gym.places);
+  }, [gym.places]);
 
   const handleGymDetail = (gymId) => {
     dispatch(gymDetails(gymId));
     console.log("working");
   };
 
+  const handleLocation = (city) => {
+    const temp = gym.places?.filter((item) => item.city === city);
+    console.log("handleLocation", temp);
+    setLocation(temp[0].addressComponent);
+  };
+
   useEffect(() => {
-   
-   if (gym.places) {
-    let temp=[]
-    for (let i = 0; i < gym.places.length; i++){
-     temp.push(...gym.places[i].addressComponent)
-     
+    if (gym.places) {
+      let temp = [];
+      for (let i = 0; i < gym.places.length; i++) {
+        temp.push(...gym.places[i].addressComponent);
+      }
+      setGyms(temp);
+      setLoading(false);
     }
-    setGyms(temp)
-    setLoading(false)
-   }
   }, [gym.places]);
 
+  useEffect(() => {
+    dispatch(getGymByCity(selectedCity));
+  }, [selectedCity]);
+
   const handleSelectedCity = (city) => {
-    setSelectedCity("New Delhi");
+    setSelectedCity(city);
+    handleLocation(city);
     setIsOpen(false);
-
-    if (gym.places) {
-      const x = gym.places.filter((item) => item.city === city);
-      console.log(
-        x[0].addressComponent[0],
-        selectedCity,
-        "selected city",
-        gyms
-      );
-     if (x) {
-      setSelectedCityGym(x[0].addressComponent);
-      setGyms(null)
-     }
-    }
-
-    console.log(gym.places, "selectedCityGym", selectedCityGym);
   };
 
   return (
-   <div>
- 
+    <div
+      onClick={() => {
+        isOpen && setIsOpen(false);
+      }}
+    >
       <div>
         <Banner />
       </div>
@@ -84,16 +93,28 @@ const Gyms = () => {
       </div>
       <div className="px-10 lg:flex justify-center">
         <div className="w-full px-3 lg:px-0 lg:w-[30vw] ">
-          <h1 className="text-4xl font-bold text-white">Filters</h1>
+          <div className="text-white flex justify-between items-center">
+            <h1 className="text-4xl font-bold">Filters</h1>
+            <button
+              onClick={() => {
+                setSelectedCity(null);
+                setLocation(null);
+                setSingleGym(null);
+              }}
+              className={`${selectedCity ? "visible" : "invisible"} px-5 py-1 rounded-sm font-bold text-lg bg-red-700`}>Reset</button>
+          </div>
+          
 
           <div className="mt-10">
-            <h2 className="tex-3xl font-bold text-white">Nearest Gym</h2>
-            <button
-              onClick={handleNearestGym}
-              className="my-5 px-4 py-3 rounded-md text-2xg border-2 bg-gray-700 border-gray-500 text-gray-400 font-bold"
-            >
-              GYM NEAREST ME
-            </button>
+            <h2 className="tex-3xl font-bold text-white">Location</h2>
+            <div className="relative">
+              <input
+                className="my-5 pl-9 py-3 rounded-md text-2xg border-2 bg-gray-700 border-gray-500 text-white"
+                type="text"
+                placeholder="Enter location"
+              />
+              <AiOutlineSearch className="absolute bottom-9 left-3 text-xl text-white" />
+            </div>
           </div>
 
           <div>
@@ -144,45 +165,48 @@ const Gyms = () => {
               </div>
             )}
           </div>
+          {location && (
+            <div>
+              <div>
+                <h2 className="text-white text-lg font-semibold">Locations</h2>
+              </div>
+              <div className="bg-[#424242]   my-5 rounded-sm border-2 border-gray-500  w-[90%]">
+                {gym.gymByCity?.map((item, index) => (
+                  <p
+                    onClick={() => setSingleGym(item)}
+                    className={`${
+                      index ? "border-t" : ""
+                    } text-white  p-4 cursor-pointer`}
+                  >
+                    {item.address1}, {item.address2}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        <div className="w-full px-3 lg:w-[70vw] mb-28 space-y-2 max-h-screen overflow-y-scroll">
-          {selectedCityGym?.map((item) => (
+        <div className="gymScroll w-full px-3 lg:w-[70vw] mb-28 space-y-2 max-h-screen overflow-y-scroll">
+          {singleGym ? (
             <GymCard
-              handleGymDetail={() => handleGymDetail(item.user_id)}
-              distance_text={item.distance_text}
-              duration_text={item.duration_text}
-              adress1={item.address1}
-              adress2={item.address2}
-              gymName={item.gym_name}
-              gymImg={"https://source.unsplash.com/random/?gym"}
+              item={singleGym}
+              terms={gym.nearestGym.terms}
             />
-          ))}
-          { !selectedCityGym &&
-            gym.nearestGym &&
-            gym.nearestGym?.map((item) => (
+          ) : selectedCity ? (
+            gym.gymByCity?.map((item) => (
               <GymCard
-                handleGymDetail={() => handleGymDetail(item.user_id)}
-                distance_text={item.distance_text}
-                duration_text={item.duration_text}
-                adress1={item.address1}
-                adress2={item.address2}
-                gymName={item.gym_name}
-                gymImg={"https://source.unsplash.com/random/?gym"}
-              />
-            ))}
-
-          {  gyms?.map((item) => (
-              <GymCard
-                handleGymDetail={() => handleGymDetail(item.user_id)}
-                distance_text={item.distance_text}
-                duration_text={item.duration_text}
-                adress1={item.address1}
-                adress2={item.address2}
-                gymName={item.gym_name}
-                gymImg={"https://source.unsplash.com/random/?gym"}
+                item={item}
+                terms={gym.nearestGym.terms}
               />
             ))
-          }
+          ) : (
+            gym.nearestGym?.data.map((item) => (
+              <GymCard
+                key={item.user_id}
+                item={item}
+                terms={gym.nearestGym.terms}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

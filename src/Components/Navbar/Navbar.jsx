@@ -22,7 +22,7 @@ const Navbar = () => {
       <div
         className={`${
           scrollState ? "bg-black" : "bg-none"
-        } z-10 flex justify-between items-center text-white px-5 lg:px-28 py-1 fixed top-0 w-full`}
+        } z-50 flex justify-between items-center text-white px-5 lg:px-28 py-1 fixed top-0 w-full`}
       >
         <div>
           <img src="https://wtfup.me/apple-icon-72x72.png" alt="" />

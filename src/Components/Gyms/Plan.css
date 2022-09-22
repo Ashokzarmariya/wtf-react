@@ -1,0 +1,43 @@
+
+.first{
+ background-image: linear-gradient(to right, rgb(155, 255, 15) , rgb(40, 141, 0));
+
+}
+.second{
+ background-image: linear-gradient(to right, rgb(253, 197, 207) , rgb(251, 156, 172));
+}
+.third{
+  background-image: linear-gradient(to right, rgb(218, 0, 0) , rgb(141, 0, 0));
+}
+
+.fourth{
+ background-image: linear-gradient(to right, rgb(0, 193, 246) , rgb(0, 96, 141));
+}
+
+.firstButton{
+ background: rgb(155, 255, 15);
+ padding: 3px 9px;
+}
+.secondButton{
+ background: rgb(253, 197, 207);
+ padding: 3px 9px;
+}
+.thirdButton{
+ background: rgb(218, 0, 0);
+ padding: 3px 9px;
+}
+.fourthButton{
+ background: rgb(0, 193, 246);
+ padding: 3px 9px;
+}
+
+.second{
+ background-image: linear-gradient(to right, rgb(253, 197, 207) , rgb(251, 156, 172));
+}
+.third{
+  background-image: linear-gradient(to right, rgb(218, 0, 0) , rgb(141, 0, 0));
+}
+
+.fourth{
+ background-image: linear-gradient(to right, rgb(0, 193, 246) , rgb(0, 96, 141));
+}
