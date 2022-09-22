@@ -10,7 +10,7 @@ import { GrLocation } from "react-icons/gr";
 import { IoLocationOutline } from "react-icons/io5";
 import Service from "../Service/Service";
 import Plan from "./Plan";
-import './Plan.css'
+import "./Plan.css";
 
 let hasMap = new Map();
 let btn = new Map();
@@ -19,46 +19,40 @@ const GymDetail = () => {
   const gymId = localStorage.getItem("gym_id");
   const gym = JSON.parse(localStorage.getItem("singleGym"));
   const terms = JSON.parse(localStorage.getItem("terms"));
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
- const { plans } = useSelector((store) => store.gym);
+  const { plans } = useSelector((store) => store.gym);
 
-
- 
+  console.log("plans", plans);
 
   useEffect(() => {
     dispatch(gymDetails(gymId));
   }, [gymId]);
- 
- // making dynamic bg color of plan card
- useEffect(() => {
-  let count=1
-  for (let i = 0; i < plans?.length; i++){
-   
-   if (count === 1) {
-    hasMap.set(i, "first")
-    btn.set(i,"firstButton")
-   }
-   else if (count === 2) {
-    hasMap.set(i, 'second');
-    btn.set(i, "secondButton");
-   }
-   else if (count === 3) {
-    hasMap.set(i, 'third');
-    btn.set(i,"thirdButton")
-   }
-   else {
-    hasMap.set(i, "fourth")
-    btn.set(i,"fourthButton")
-   }
-   
-   if (count < 4)
-    count++
-   else count=1
-  }
-  console.log("--", hasMap.get(5))
-  console.log("plan")
- },[plans])
+
+  // making dynamic bg color of plan card
+  useEffect(() => {
+    let count = 1;
+    for (let i = 0; i < plans?.length; i++) {
+      if (count === 1) {
+        hasMap.set(i, "first");
+        btn.set(i, "firstButton");
+      } else if (count === 2) {
+        hasMap.set(i, "second");
+        btn.set(i, "secondButton");
+      } else if (count === 3) {
+        hasMap.set(i, "third");
+        btn.set(i, "thirdButton");
+      } else {
+        hasMap.set(i, "fourth");
+        btn.set(i, "fourthButton");
+      }
+
+      if (count < 4) count++;
+      else count = 1;
+    }
+    console.log("--", hasMap.get(5));
+    console.log("plan");
+  }, [plans]);
 
   return (
     <div className="text-white">
@@ -93,7 +87,7 @@ const GymDetail = () => {
             {gym.address1}, {gym.address2}
           </h2>
         </div>
-        <div className="flex py-10">
+        <div className="flex py-10 my-10">
           {/* left side */}
           <div className="w-[50%] pr-5">
             <h3 className="text-3xl font-semibold">Description</h3>
@@ -111,10 +105,24 @@ const GymDetail = () => {
                 Why to choose WTF?
               </h3>
 
-              <div className="flex flex-wrap ">
+              <div className="flex flex-wrap my-5">
                 {terms.map((item) =>
                   item.name ? <Service name={item.name} img={item.icon} /> : ""
                 )}
+              </div>
+
+              <div className="space-y-5 my-10">
+                <h2 className="text-3xl font-semibold">How it works?</h2>
+
+                <p className="text-lg">
+                  Pick membership start date and complete your subscription
+                  process by clicking Buy Now below
+                </p>
+                <p className="text-lg">
+                  A dedicated general trainer will be assigned after you have
+                  taken your subscription
+                </p>
+                <p className="text-lg">Explore WTF and start your fitness journey</p>
               </div>
             </div>
           </div>
@@ -124,22 +132,22 @@ const GymDetail = () => {
               Choose Membership
             </h1>
             <div className="p-10 space-y-3">
-              {plans?.map((item, index) => 
-              {
-               // if (count <= 4)
-               //  setCount(count + 1);
-               // else setCount(1);
-               return <Plan
-                key={item.plan_uid}
-                  plan_price={item.plan_price}
-                  name={item.plan_name}
-                  bgClass={hasMap.get(index)}
-                planNumber={index + 1}
-                btnClass={btn.get(index)}
-                />}
-              )}
-
-            
+              {plans?.map((item, index) => {
+                // if (count <= 4)
+                //  setCount(count + 1);
+                // else setCount(1);
+                return (
+                  <Plan
+                    key={item.plan_uid}
+                    plan_price={item.plan_price}
+                    name={item.plan_name}
+                    bgClass={hasMap.get(index)}
+                    planNumber={index + 1}
+                    btnClass={btn.get(index)}
+                    description={item.description}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
