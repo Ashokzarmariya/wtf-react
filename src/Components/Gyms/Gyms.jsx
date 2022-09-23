@@ -14,24 +14,21 @@ import {
 import { useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import { AiOutlineSearch } from "react-icons/ai";
+import Footer from "./Footer";
 
 const Gyms = () => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const { gym } = useSelector((store) => store);
-  const [gyms, setGyms] = useState([]);
   const [singleGym, setSingleGym] = useState(null);
   const [loading, setLoading] = useState(true);
   const [places, setPlaces] = useState();
   const [location, setLocation] = useState();
+  const [search, setSearch] = useState(null);
+  const [gymByName, setGymByName] = useState([]);
 
-  console.log("gyms", gym.nearestGym);
-  const handleNearestGym = () => {
-    dispatch(nearestGym());
-
-    setGyms([]);
-  };
+  // console.log("gyms", gym.nearestGym);
 
   useEffect(() => {
     dispatch(getPlaces());
@@ -42,9 +39,16 @@ const Gyms = () => {
     setPlaces(gym.places);
   }, [gym.places]);
 
-  const handleGymDetail = (gymId) => {
-    dispatch(gymDetails(gymId));
-    console.log("working");
+  //search gym
+  const handleSearchGym = (search) => {
+    const temp = gym.nearestGym.data.filter(
+      (item) => {
+        
+        return item.gym_name.toLowerCase().includes(search)
+      }
+    );
+  
+    return temp;
   };
 
   const handleLocation = (city) => {
@@ -52,17 +56,6 @@ const Gyms = () => {
     console.log("handleLocation", temp);
     setLocation(temp[0].addressComponent);
   };
-
-  useEffect(() => {
-    if (gym.places) {
-      let temp = [];
-      for (let i = 0; i < gym.places.length; i++) {
-        temp.push(...gym.places[i].addressComponent);
-      }
-      setGyms(temp);
-      setLoading(false);
-    }
-  }, [gym.places]);
 
   useEffect(() => {
     dispatch(getGymByCity(selectedCity));
@@ -84,14 +77,23 @@ const Gyms = () => {
         <Banner />
       </div>
 
-      <div className="px-10 py-10">
+      <div className="relative px-5 lg:px-10 py-10">
         <input
-          className="outline-none py-4 border-2 rounded-md w-full pl-10 bg-black text-white border-white"
+          className="outline-none py-4 border-2 rounded-md w-full pl-10 lg:pl-14 bg-black text-white border-white"
           type="text"
           placeholder="search gym name hear..."
+          onChange={(e) => {
+            setSearch(e.target.value);
+            console.log("search", handleSearchGym(e.target.value));
+          }}
+          value={search}
         />
+        <AiOutlineSearch className="absolute top-[4rem] text-lg left-10 lg:left-16 text-gray-400 "/>
+        <button
+          onClick={()=>setSearch("")}
+          className="absolute top-[3.4rem] lg:top-[3.2rem] right-10 lg:right-14 py-1 px-3 lg:px-4 bg-red-700 text-white lg:text-lg rounded-md">clear</button>
       </div>
-      <div className="px-10 lg:flex justify-center">
+      <div className="px-5 lg:px-10 lg:flex justify-center">
         <div className="w-full px-3 lg:px-0 lg:w-[30vw] ">
           <div className="text-white flex justify-between items-center">
             <h1 className="text-4xl font-bold">Filters</h1>
@@ -101,9 +103,13 @@ const Gyms = () => {
                 setLocation(null);
                 setSingleGym(null);
               }}
-              className={`${selectedCity ? "visible" : "invisible"} px-5 py-1 rounded-sm font-bold text-lg bg-red-700`}>Reset</button>
+              className={`${
+                selectedCity ? "visible" : "invisible"
+              } px-5 py-1 rounded-sm font-bold text-lg bg-red-700`}
+            >
+              Reset
+            </button>
           </div>
-          
 
           <div className="mt-10">
             <h2 className="tex-3xl font-bold text-white">Location</h2>
@@ -185,18 +191,20 @@ const Gyms = () => {
             </div>
           )}
         </div>
-        <div className="gymScroll w-full px-3 lg:w-[70vw] mb-28 space-y-2 max-h-screen overflow-y-scroll">
-          {singleGym ? (
-            <GymCard
-              item={singleGym}
-              terms={gym.nearestGym.terms}
-            />
-          ) : selectedCity ? (
-            gym.gymByCity?.map((item) => (
+        <div className="gymScroll w-full px-3 lg:w-[70vw] mb-28 space-y-2 lg:max-h-screen lg:overflow-y-scroll">
+          {search ? (
+            handleSearchGym(search).map((item) => (
               <GymCard
+                key={item.user_id}
                 item={item}
                 terms={gym.nearestGym.terms}
               />
+            ))
+          ) : singleGym ? (
+            <GymCard item={singleGym} terms={gym.nearestGym.terms} />
+          ) : selectedCity ? (
+            gym.gymByCity?.map((item) => (
+              <GymCard item={item} terms={gym.nearestGym.terms} />
             ))
           ) : (
             gym.nearestGym?.data.map((item) => (
@@ -208,6 +216,10 @@ const Gyms = () => {
             ))
           )}
         </div>
+      </div>
+
+      <div className="px-5 lg:px-10 py-20">
+        <Footer/>
       </div>
     </div>
   );
