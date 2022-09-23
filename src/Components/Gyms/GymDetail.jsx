@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Carousel from "../Carousel/Carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { gymDetails } from "../../Redux/Gym/Action";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
-import { GrLocation } from "react-icons/gr";
 import { IoLocationOutline } from "react-icons/io5";
 import Service from "../Service/Service";
 import Plan from "./Plan";
@@ -20,13 +19,14 @@ const GymDetail = () => {
   const gym = JSON.parse(localStorage.getItem("singleGym"));
   const terms = JSON.parse(localStorage.getItem("terms"));
   const navigate = useNavigate();
-
+  const divRef = useRef();
   const { plans } = useSelector((store) => store.gym);
 
   console.log("plans", plans);
 
   useEffect(() => {
     dispatch(gymDetails(gymId));
+divRef.current.scrollIntoView({behaviour:"smooth"})
   }, [gymId]);
 
   // making dynamic bg color of plan card
@@ -56,7 +56,7 @@ const GymDetail = () => {
 
   return (
     <div className="text-white">
-      <div className="">
+      <div ref={divRef} className="">
         <Carousel data={gym.gallery} />
         <div
           onClick={() => navigate(-1)}

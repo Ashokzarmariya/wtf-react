@@ -154,38 +154,17 @@ const Gyms = () => {
 
             {isOpen && (
               <div className="bg-[#424242] text-gray-200  w-[90%] space-y-2 rounded-sm">
-                <p
+                {gym.places?.map((item) => <p
+                  key={item.city}
                   onClick={() => {
-                    handleSelectedCity("Delhi");
+                    handleSelectedCity(item.city);
                   }}
                   className="p-3 hover:bg-[#2d2d2d] w-full cursor-pointer"
                 >
-                  Delhi
-                </p>
-                <p
-                  onClick={() => {
-                    handleSelectedCity("New Delhi");
-                  }}
-                  className="p-3 hover:bg-[#2d2d2d] w-full cursor-pointer"
-                >
-                  New Delhi
-                </p>
-                <p
-                  onClick={() => {
-                    handleSelectedCity("Ghaziabad");
-                  }}
-                  className="p-3 hover:bg-[#2d2d2d] w-full cursor-pointer"
-                >
-                  Ghaziabad
-                </p>
-                <p
-                  onClick={() => {
-                    handleSelectedCity("Noida");
-                  }}
-                  className="p-3 hover:bg-[#2d2d2d] w-full cursor-pointer"
-                >
-                  Noida
-                </p>
+                  {item.city}
+                </p>)}
+                
+              
               </div>
             )}
           </div>
