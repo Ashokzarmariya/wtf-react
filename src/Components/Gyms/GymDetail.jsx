@@ -11,7 +11,7 @@ import Service from "../Service/Service";
 import Plan from "./Plan";
 import "./Plan.css";
 
-var hasMap = new Map();
+var obj= {};
 var btn = new Map();
 const GymDetail = () => {
   const dispatch = useDispatch();
@@ -34,23 +34,23 @@ divRef.current.scrollIntoView({behaviour:"smooth"})
     let count = 1;
     for (let i = 0; i < plans?.length; i++) {
       if (count === 1) {
-        hasMap.set(i, "first");
+        obj[i]= "first";
         btn.set(i, "firstButton");
       } else if (count === 2) {
-        hasMap.set(i, "second");
+        obj[i]="second";
         btn.set(i, "secondButton");
       } else if (count === 3) {
-        hasMap.set(i, "third");
+        obj[i]= "third";
         btn.set(i, "thirdButton");
       } else {
-        hasMap.set(i, "fourth");
+        obj[i]= "fourth";
         btn.set(i, "fourthButton");
       }
 
       if (count < 4) count++;
       else count = 1;
     }
-    console.log("--", hasMap.get(5),plans);
+    console.log("--", obj[5]);
     console.log("plan");
   }, [plans]);
 
@@ -141,7 +141,7 @@ divRef.current.scrollIntoView({behaviour:"smooth"})
                     key={item.plan_uid}
                     plan_price={item.plan_price}
                     name={item.plan_name}
-                    bgClass={hasMap.get(index)}
+                    bgClass={obj[index]}
                     planNumber={index + 1}
                     btnClass={btn.get(index)}
                     description={item.description}
