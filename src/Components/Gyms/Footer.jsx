@@ -11,16 +11,13 @@ const Footer = () => {
       <div className="flex flex-col items-center  space-y-10">
         <img src="https://wtfup.me/apple-icon-72x72.png" alt="" />
         <div className="flex space-x-5">
-          <span className="p-3 bg-white rounded-full">
+          <a className="p-3 bg-white rounded-full" href="https://www.instagram.com/wtfupme/" target="-blanck">
             <AiOutlineInstagram className="text-red-700" />
-          </span>
-
-          <span className="p-3 bg-white rounded-full">
-            <FaFacebookF className="text-blue-900" />
-          </span>
-          <span className="p-3 bg-white rounded-full">
-            <GrLinkedinOption className="text-blue-900" />
-          </span>
+           </a>
+          
+          <a className="p-3 bg-white rounded-full" href="https://www.facebook.com/wtfupme/" target={"-blanck"}> <FaFacebookF className="text-blue-900" /></a>
+          <a className="p-3 bg-white rounded-full" href="https://www.linkedin.com/company/wtfupme/" target={'-blanck'}><GrLinkedinOption className="text-blue-900" /></a>
+          
         </div>
       </div>
       <div className="space-y-5">
