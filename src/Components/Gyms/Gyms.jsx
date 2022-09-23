@@ -222,7 +222,7 @@ const Gyms = () => {
                 terms={gym.nearestGym.terms}
               />
             ))
-          ):address ? (
+          ):search ? (
             handleSearchGym(search).map((item) => (
               <GymCard
                 key={item.user_id}
