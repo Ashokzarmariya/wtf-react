@@ -218,7 +218,7 @@ const Gyms = () => {
         </div>
       </div>
 
-      <div className="px-5 lg:px-10 py-20">
+      <div className="px-5 lg:px-20 py-20">
         <Footer/>
       </div>
     </div>
