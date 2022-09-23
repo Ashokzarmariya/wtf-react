@@ -80,11 +80,18 @@ const Gyms = () => {
   };
 
   return (
-    <div
+    <>
+     {!gym.nearestGym && <div className="flex justify-center items-center h-[100vh]">
+         <img src="https://wtfup.me/assets/loader.gif" alt="" />
+    </div>}
+      
+     {gym.nearestGym && <div
       onClick={() => {
         isOpen && setIsOpen(false);
       }}
     >
+      
+     
       <div>
         <Banner />
       </div>
@@ -230,7 +237,9 @@ const Gyms = () => {
       <div className="px-5 lg:px-20 py-20">
         <Footer/>
       </div>
-    </div>
+      </div>}
+    </>
+   
   );
 };
 
