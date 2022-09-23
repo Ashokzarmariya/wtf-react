@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Carousel from "../Carousel/Carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { gymDetails } from "../../Redux/Gym/Action";
@@ -11,8 +11,8 @@ import Service from "../Service/Service";
 import Plan from "./Plan";
 import "./Plan.css";
 
-let hasMap = new Map();
-let btn = new Map();
+var hasMap = new Map();
+var btn = new Map();
 const GymDetail = () => {
   const dispatch = useDispatch();
   const gymId = localStorage.getItem("gym_id");
@@ -22,7 +22,7 @@ const GymDetail = () => {
   const divRef = useRef();
   const { plans } = useSelector((store) => store.gym);
 
-  console.log("plans", plans);
+  // console.log("plans", plans);
 
   useEffect(() => {
     dispatch(gymDetails(gymId));
@@ -50,7 +50,7 @@ divRef.current.scrollIntoView({behaviour:"smooth"})
       if (count < 4) count++;
       else count = 1;
     }
-    console.log("--", hasMap.get(5));
+    console.log("--", hasMap.get(5),plans);
     console.log("plan");
   }, [plans]);
 
