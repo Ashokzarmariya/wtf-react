@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Carousel from "../Carousel/Carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { gymDetails } from "../../Redux/Gym/Action";
@@ -21,8 +21,9 @@ const GymDetail = () => {
   const navigate = useNavigate();
   const divRef = useRef();
   const { plans } = useSelector((store) => store.gym);
+  const [flag, setFlag] = useState(false);
 
-  // console.log("plans", plans);
+  console.log("flag", flag);
 
   useEffect(() => {
     dispatch(gymDetails(gymId));
@@ -31,6 +32,7 @@ divRef.current.scrollIntoView({behaviour:"smooth"})
 
   // making dynamic bg color of plan card
   useEffect(() => {
+    setFlag(!flag);
     let count = 1;
     for (let i = 0; i < plans?.length; i++) {
       if (count === 1) {
