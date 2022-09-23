@@ -23,10 +23,10 @@ const Gyms = () => {
   const { gym } = useSelector((store) => store);
   const [singleGym, setSingleGym] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [places, setPlaces] = useState();
+  // const [places, setPlaces] = useState();
   const [location, setLocation] = useState();
   const [search, setSearch] = useState(null);
-  const [gymByName, setGymByName] = useState([]);
+  const [address, setAddress] = useState(null);
 
   // console.log("gyms", gym.nearestGym);
 
@@ -35,9 +35,9 @@ const Gyms = () => {
     dispatch(nearestGym());
   }, []);
 
-  useEffect(() => {
-    setPlaces(gym.places);
-  }, [gym.places]);
+  // useEffect(() => {
+  //   setPlaces(gym.places);
+  // }, [gym.places]);
 
   //search gym
   const handleSearchGym = (search) => {
@@ -45,6 +45,17 @@ const Gyms = () => {
       (item) => {
         
         return item.gym_name.toLowerCase().includes(search)
+      }
+    );
+  
+    return temp;
+  };
+
+  const searchByLoaction = (location) => {
+    const temp = gym.nearestGym.data.filter(
+      (item) => {
+        
+        return (item.address1.toLowerCase().includes(location) || item.address2.toLowerCase().includes(location))
       }
     );
   
@@ -65,6 +76,7 @@ const Gyms = () => {
     setSelectedCity(city);
     handleLocation(city);
     setIsOpen(false);
+    setSingleGym(null)
   };
 
   return (
@@ -102,6 +114,8 @@ const Gyms = () => {
                 setSelectedCity(null);
                 setLocation(null);
                 setSingleGym(null);
+                setAddress("");
+                setSearch("");
               }}
               className={`${
                 selectedCity ? "visible" : "invisible"
@@ -115,9 +129,13 @@ const Gyms = () => {
             <h2 className="tex-3xl font-bold text-white">Location</h2>
             <div className="relative">
               <input
+                onChange={(e) => {
+                  setAddress(e.target.value)
+                }}
                 className="my-5 pl-9 py-3 rounded-md text-2xg border-2 bg-gray-700 border-gray-500 text-white"
                 type="text"
                 placeholder="Enter location"
+                value={address}
               />
               <AiOutlineSearch className="absolute bottom-9 left-3 text-xl text-white" />
             </div>
@@ -179,7 +197,11 @@ const Gyms = () => {
               <div className="bg-[#424242]   my-5 rounded-sm border-2 border-gray-500  w-[90%]">
                 {gym.gymByCity?.map((item, index) => (
                   <p
-                    onClick={() => setSingleGym(item)}
+                    onClick={() => {
+                      setSearch(null);
+                      setAddress(null);
+                      setSingleGym(item)
+                    }}
                     className={`${
                       index ? "border-t" : ""
                     } text-white  p-4 cursor-pointer`}
@@ -192,7 +214,15 @@ const Gyms = () => {
           )}
         </div>
         <div className="gymScroll w-full px-3 lg:w-[70vw] mb-28 space-y-2 lg:max-h-screen lg:overflow-y-scroll">
-          {search ? (
+          {address ? (
+            searchByLoaction(address).map((item) => (
+              <GymCard
+                key={item.user_id}
+                item={item}
+                terms={gym.nearestGym.terms}
+              />
+            ))
+          ):address ? (
             handleSearchGym(search).map((item) => (
               <GymCard
                 key={item.user_id}
