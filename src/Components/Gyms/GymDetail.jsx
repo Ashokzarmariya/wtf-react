@@ -66,11 +66,11 @@ const GymDetail = () => {
           <p className="">Back</p>
         </div>
       </div>
-      <div className="px-10 py-14">
+      <div className="px-5 lg:px-10 py-14">
         <div className="flex justify-between">
-          <h1 className="text-5xl font-bold">{gym.gym_name}</h1>
-          <div className="text-white text-2xl flex flex-col items-center bg-[#c50000] py-3 px-8">
-            <div className="flex space-x-4">
+          <h1 className="text-xl lg:text-5xl font-bold">{gym.gym_name}</h1>
+          <div className="text-white lg:text-2xl flex flex-col items-center bg-[#c50000] py-2 lg:py-3 px-4 lg:px-8">
+            <div className="flex space-x-1 lg:space-x-4">
               <AiFillStar />
               <AiFillStar />
               <AiFillStar />
@@ -80,20 +80,20 @@ const GymDetail = () => {
             <p>115</p>
           </div>
         </div>
-        <div className="flex space-x-1 items-center text-2xl">
-          <IoLocationOutline />
+        <div className="flex space-x-2 items-center text-sm lg:text-2xl py-3">
+          <IoLocationOutline className="text-2xl"/>
           <h2>
             {" "}
             {gym.address1}, {gym.address2}
           </h2>
         </div>
-        <div className="flex py-10 my-10">
+        <div className="flex flex-col lg:flex-row py-10 my-10">
           {/* left side */}
-          <div className="w-[50%] pr-5">
-            <h3 className="text-3xl font-semibold">Description</h3>
-            <p className="py-5 text-lg">{gym.description}</p>
+          <div className="w-full lg:w-[50%] lg:pr-5">
+            <h3 className="text-xl lg:text-3xl font-semibold">Description</h3>
+            <p className="py-5 text-sm lg:text-lg">{gym.description}</p>
             <div className="py-10">
-              <h3 className="text-3xl font-semibold py-3">Facillities</h3>
+              <h3 className="text-xl lg:text-3xl font-semibold py-3">Facillities</h3>
               <div className="flex space-x-2 flex-wrap ">
                 {gym.benefits.map((item) => (
                   <p>{item.name}</p>
@@ -101,7 +101,7 @@ const GymDetail = () => {
               </div>
             </div>
             <div>
-              <h3 className="text-3xl font-semibold py-3">
+              <h3 className="text-xl lg:text-3xl font-semibold py-3">
                 Why to choose WTF?
               </h3>
 
@@ -112,26 +112,26 @@ const GymDetail = () => {
               </div>
 
               <div className="space-y-5 my-10">
-                <h2 className="text-3xl font-semibold">How it works?</h2>
+                <h2 className="text-xl lg:text-3xl font-semibold">How it works?</h2>
 
-                <p className="text-lg">
+                <p className="lg:text-lg">
                   Pick membership start date and complete your subscription
                   process by clicking Buy Now below
                 </p>
-                <p className="text-lg">
+                <p className="lg:text-lg">
                   A dedicated general trainer will be assigned after you have
                   taken your subscription
                 </p>
-                <p className="text-lg">Explore WTF and start your fitness journey</p>
+                <p className="lg:text-lg">Explore WTF and start your fitness journey</p>
               </div>
             </div>
           </div>
           {/* right side */}
-          <div className="w-[50%] bg-[#2e2e2e] rounded-lg">
+          <div className="w-full lg:w-[50%] bg-[#2e2e2e] rounded-lg">
             <h1 className="text-3xl font-bold text-center py-5">
               Choose Membership
             </h1>
-            <div className="p-10 space-y-3">
+            <div className="p-5 lg:p-10 space-y-3">
               {plans?.map((item, index) => {
                 // if (count <= 4)
                 //  setCount(count + 1);
